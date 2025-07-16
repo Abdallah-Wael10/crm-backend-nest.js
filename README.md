@@ -11,6 +11,7 @@ Backend RESTful API for a CRM system built with **NestJS** and **MongoDB**.
 - **Customer Management** (CRUD, each customer linked to a user)
 - **Deals Management** (CRUD, each deal linked to user & customer, email notification on create/update)
 - **Tasks Management** (CRUD, assign to self or by admin to any user, email notification)
+- **Dashboard** (user & admin statistics endpoints)
 - **Password Reset** (email code, secure reset)
 - **Rate Limiting** (Throttler)
 - **Validation** (class-validator)
@@ -122,6 +123,82 @@ App will run on [http://localhost:5000](http://localhost:5000)
 
 ---
 
+### **Dashboard**
+
+#### **User Dashboard**
+
+- `GET /api/dashboard`  
+  **(Requires JWT)**  
+  Returns statistics for the logged-in user:
+  - `totalCustomers`: Number of customers created by the user
+  - `totalDeals`: Number of deals created by the user
+  - `wonDeals`: Number of deals with status "won"
+  - `lostDeals`: Number of deals with status "lost"
+  - `pendingDeals`: Number of deals with status "pending"
+  - `openTasks`: Number of tasks assigned to the user with status "open"
+  - `doneTasks`: Number of tasks assigned to the user with status "done"
+
+  **Example Response:**
+  ```json
+  {
+    "totalCustomers": 5,
+    "totalDeals": 10,
+    "wonDeals": 3,
+    "lostDeals": 2,
+    "pendingDeals": 5,
+    "openTasks": 4,
+    "doneTasks": 6
+  }
+  ```
+
+#### **Admin Dashboard**
+
+- `GET /api/dashboard/admin/all`  
+  **(Requires JWT, Admin only)**  
+  Returns statistics for **all users**. Each user object contains:
+  - `id`, `username`, `email`
+  - `totalCustomers`, `totalDeals`, `wonDeals`, `lostDeals`, `pendingDeals`, `openTasks`, `doneTasks`
+
+  **Example Response:**
+  ```json
+  [
+    {
+      "user": {
+        "id": "userId1",
+        "username": "user1",
+        "email": "user1@email.com"
+      },
+      "totalCustomers": 5,
+      "totalDeals": 10,
+      "wonDeals": 3,
+      "lostDeals": 2,
+      "pendingDeals": 5,
+      "openTasks": 4,
+      "doneTasks": 6
+    },
+    {
+      "user": {
+        "id": "userId2",
+        "username": "user2",
+        "email": "user2@email.com"
+      },
+      "totalCustomers": 2,
+      "totalDeals": 4,
+      "wonDeals": 1,
+      "lostDeals": 1,
+      "pendingDeals": 2,
+      "openTasks": 1,
+      "doneTasks": 3
+    }
+  ]
+  ```
+
+- `GET /api/dashboard/:id`  
+  **(Requires JWT, Admin only)**  
+  Returns statistics for a specific user by user ID (same structure as `/api/dashboard`).
+
+---
+
 ## Testing with Postman
 
 1. **Register/Login** to get JWT token.
@@ -148,6 +225,7 @@ src/
   deal/
   tasks/
   mail/
+  dashboard/
   common/
   config/
   main.ts
