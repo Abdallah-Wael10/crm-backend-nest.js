@@ -5,10 +5,11 @@ import { AuthModule } from './auth/Auth.module';
 import { UsersModule } from './users/users.module';
 import { CustomersModule } from './customers/customers.module';
 import { AppController } from './app.controller';
-import { AppService } from './app.service'; // <-- Add this import
+import { AppService } from './app.service'; 
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { DealModule } from './deal/deal.module';
 import { TasksModule } from './tasks/tasks.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { TasksModule } from './tasks/tasks.module';
     AuthModule,
     UsersModule,
     CustomersModule,
+    DashboardModule,
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
