@@ -52,8 +52,7 @@ export class TasksService {
   async findOne(id: string, userId: string, userRole: string): Promise<Task> {
     const task = await this.taskModel.findById(id).exec();
     if (!task) throw new NotFoundException('Task not found');
-    if (userRole !== 'admin' && task.assignedTo !== userId)
-      throw new ForbiddenException('Not allowed');
+
     return task;
   }
 
@@ -65,8 +64,7 @@ export class TasksService {
   ): Promise<Task> {
     const task = await this.taskModel.findById(id).exec();
     if (!task) throw new NotFoundException('Task not found');
-    if (userRole !== 'admin' && task.assignedTo !== userId)
-      throw new ForbiddenException('Not allowed');
+
     Object.assign(task, updateTasksDto);
     return task.save();
   }
@@ -78,9 +76,8 @@ export class TasksService {
   ): Promise<{ message: string }> {
     const task = await this.taskModel.findById(id).exec();
     if (!task) throw new NotFoundException('Task not found');
-    if (userRole !== 'admin' && task.assignedTo !== userId)
-      throw new ForbiddenException('Not allowed');
+
     await task.deleteOne();
     return { message: 'Task deleted successfully' };
   }
-}
+} 

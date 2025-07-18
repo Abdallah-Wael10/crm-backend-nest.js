@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateDealDto {
   @IsString()
@@ -17,7 +17,7 @@ export class CreateDealDto {
   @IsNotEmpty()
   customerId: string; // Customer associated with the deal
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  userId: string; // User associated with the deal
+  userId?: string; // User associated with the deal (اختياري)
 }
